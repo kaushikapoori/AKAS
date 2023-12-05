@@ -89,43 +89,44 @@
         </div>
     </div>
 
-    <script>
-        async function sendMessage() {
-            var userInput = document.getElementById('userInput').value;
-            var chatMessages = document.getElementById('chatMessages');
+   <script>
+    async function sendMessage() {
+        var userInput = document.getElementById('userInput').value;
+        var chatMessages = document.getElementById('chatMessages');
 
-            // Display user message
-            chatMessages.innerHTML += '<div class="user-message">' + userInput + '</div>';
+        // Display user message
+        chatMessages.innerHTML += '<div class="user-message">' + userInput + '</div>';
 
-            // Call OpenAI GPT API to get a response (replace 'YOUR_API_KEY' with your actual API key)
-            const apiKey = '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';
-            const apiUrl = 'https://api.openai.com/v1/engines/davinci/completions';
+        // Call OpenAI GPT API to get a response (replace 'YOUR_API_KEY' with your actual API key)
+        const apiKey = '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';
+        const apiUrl = 'https://api.openai.com/v1/engines/davinci/completions';
 
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
-                },
-                body: JSON.stringify({
-                    prompt: userInput,
-                    max_tokens: 150
-                })
-            });
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                prompt: userInput,
+                max_tokens: 200,  // Adjust the max_tokens value as needed
+                temperature: 0.7  // Adjust the temperature value as needed
+            })
+        });
 
-            const result = await response.json();
-            const botResponse = result.choices[0].text.trim();
+        const result = await response.json();
+        const botResponse = result.choices[0].text.trim();
 
-            // Display bot response
-            chatMessages.innerHTML += '<div class="bot-message">' + botResponse + '</div>';
+        // Display bot response
+        chatMessages.innerHTML += '<div class="bot-message">' + botResponse + '</div>';
 
-            // Clear the input field
-            document.getElementById('userInput').value = '';
+        // Clear the input field
+        document.getElementById('userInput').value = '';
 
-            // Scroll to the bottom of the chat
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-    </script>
+        // Scroll to the bottom of the chat
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+</script>
 
 </body>
 </html>
