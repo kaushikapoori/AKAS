@@ -3,69 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT Application</title>
+    <title>AkasGPT</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-
-        .chat-container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .chat-header {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .chat-messages {
-            padding: 20px;
-            overflow-y: scroll;
-            max-height: 300px;
-        }
-
-        .user-message {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 8px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .bot-message {
-            background-color: #eee;
-            padding: 8px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .chat-input {
-            padding: 10px;
-            width: calc(100% - 20px);
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin: 0;
-        }
-
-        .send-button {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+        /* Your styles here */
     </style>
 </head>
 <body>
@@ -84,15 +24,33 @@
     </div>
 
     <script>
-        function sendMessage() {
+        async function sendMessage() {
             var userInput = document.getElementById('userInput').value;
             var chatMessages = document.getElementById('chatMessages');
 
             // Display user message
             chatMessages.innerHTML += '<div class="user-message">' + userInput + '</div>';
 
-            // Simulate bot response (replace with actual ChatGPT integration)
-            var botResponse = "This is a simulated response from ChatGPT.";
+            // Call OpenAI GPT API to get a response (replace 'YOUR_API_KEY' with your actual API key)
+            const apiKey = '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';
+            const apiUrl = 'https://api.openai.com/v1/engines/davinci-codex/completions'; // Use the appropriate engine
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    prompt: userInput,
+                    max_tokens: 150
+                })
+            });
+
+            const result = await response.json();
+            const botResponse = result.choices[0].text.trim();
+
+            // Display bot response
             chatMessages.innerHTML += '<div class="bot-message">' + botResponse + '</div>';
 
             // Clear the input field
